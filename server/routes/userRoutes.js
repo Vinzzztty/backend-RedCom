@@ -12,6 +12,9 @@ router.get("/users", userController.getAllUser);
 // GET Specific User
 router.get("/users/:id", userController.getSpecificUser);
 
+// Edit User
+router.put("/users/:id", userController.editUser);
+
 // Delete user
 router.delete("/users/:id", userController.deleteUser);
 
