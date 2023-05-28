@@ -62,6 +62,40 @@ exports.getSpecificUser = async (req, res) => {
     }
 };
 
+/**
+ * EDIT User by ID
+ */
+
+exports.editUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { username, email, password } = req.body;
+
+        // Find the user by ID and update the fields
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { username, email, password },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "User Update Successfully",
+            data: updatedUser,
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: "Error when edit user",
+        });
+    }
+};
+
+/*
+    DELETE User
+*/
 exports.deleteUser = async (req, res) => {
     try {
         const userId = req.params.id;
