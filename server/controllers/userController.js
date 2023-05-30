@@ -40,24 +40,26 @@ exports.getAllUser = async (req, res) => {
 
 exports.getSpecificUser = async (req, res) => {
     try {
-        const userId = req.params.id;
+        const { id } = req.params;
 
         // Find Specific User by Id
-        const user = await User.findById(userId);
+        const users = await User.findOne({ _id: id });
 
-        if (!user) {
+        console.log(users);
+
+        if (!users) {
             return res.status(404).json({
                 error: "User not found",
             });
         }
 
         res.status(200).json({
-            data: user,
+            data: users,
             message: "Successfully GET the User Id",
         });
-    } catch (error) {
+    } catch (err) {
         res.status(500).json({
-            error: "Gagal Mendapatkan User dengan ID itu",
+            message: err.message,
         });
     }
 };

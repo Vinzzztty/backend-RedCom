@@ -10,20 +10,11 @@
         <h1>Welcome to redCom</h1>
 
         <h2>Posts</h2>
-        <% posts.forEach((post) => { %>
-        <div>
-            <h3><%= post.content %></h3>
-            <p>Author: <%= post.user.username %></p>
-
-            <h4>Comments</h4>
-            <% post.comments.forEach((comment) => { %>
+        <% post.forEach((postingan) => { %>
             <div>
-                <p><%= comment.text %></p>
-                <p>username: <%= comment.user.username %></p>
+                <h3><%= postingan.content %></h3>
+                <p>Author: <%= postingan.user.username %></p>
             </div>
-            <% }) %>
-        </div>
-
         <% }) %>
     </body>
 </html>
