@@ -44,20 +44,18 @@ exports.getSpecificUser = async (req, res) => {
 
         // Find Specific User by Id
         const users = await User.findOne({ _id: id });
-
-        console.log(users);
-
-        if (!users) {
-            return res.status(404).json({
-                error: "User not found",
-            });
-        }
-
+        
         res.status(200).json({
             data: users,
             message: "Successfully GET the User Id",
         });
     } catch (err) {
+        if (err.name === "CastError") {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
         res.status(500).json({
             message: err.message,
         });
