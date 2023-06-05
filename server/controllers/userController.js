@@ -11,7 +11,8 @@ exports.createUser = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika creating user",
+            status: "error",
+            message: "An unexpected error occurred",
         });
     }
 };
@@ -25,11 +26,13 @@ exports.getAllUser = async (req, res) => {
         const user = await User.find({}, "username email");
 
         res.status(200).json({
+            status: "success",
             data: user,
         });
     } catch (error) {
         res.status(500).json({
-            error: "Gagal Mendapatkan Semua User",
+            status: "error",
+            message: "An unexpected error occurred",
         });
     }
 };
@@ -45,21 +48,28 @@ exports.getSpecificUser = async (req, res) => {
         // Find Specific User by Id
         const users = await User.findOne({ _id: id });
 
-        console.log(users);
-
-        if (!users) {
-            return res.status(404).json({
-                error: "User not found",
+        try {
+        } catch {
+            res.status(404).json({
+                status: "error",
+                message: "User not found",
             });
         }
 
+        if (!users) {
+            return res.status(404).json({
+                status: "error",
+                message: "User not found",
+            });
+        }
         res.status(200).json({
+            status: "success",
             data: users,
-            message: "Successfully GET the User Id",
         });
     } catch (err) {
-        res.status(500).json({
-            message: err.message,
+        res.status(404).json({
+            status: "error",
+            message: "User Not Found" || err.message,
         });
     }
 };
@@ -81,16 +91,17 @@ exports.editUser = async (req, res) => {
         );
 
         if (!updatedUser) {
-            return res.status(404).json({ error: "User not found" });
+            return res.status(404).json({ message: "User not found" });
         }
 
         res.status(200).json({
-            message: "User Update Successfully",
+            status: "success",
             data: updatedUser,
         });
     } catch (error) {
-        res.status(500).json({
-            error: "Error when edit user",
+        res.status(404).json({
+            status: "error",
+            message: "User not found" || error.message,
         });
     }
 };
@@ -106,11 +117,12 @@ exports.deleteUser = async (req, res) => {
         await User.findByIdAndDelete(userId);
 
         res.status(200).json({
+            status: "success",
             message: "User deleted successfully",
         });
     } catch (error) {
-        res.status(500).json({
-            error: "Error while delete user",
+        res.status(404).json({
+            error: "user not found" || error.message,
         });
     }
 };

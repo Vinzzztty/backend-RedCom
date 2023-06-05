@@ -19,10 +19,11 @@ exports.homepage = async (req, res) => {
                 };
             })
         );
-        res.status(200).json(postsWithComments);
+        res.status(200).json({ status: "success", postsWithComments });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika mendapatkan posts",
+            status: "error",
+            message: "An unexpected error occurred",
         });
     }
 };
@@ -33,10 +34,14 @@ exports.createPost = async (req, res) => {
         const { content, type, userId } = req.body;
         const post = new Post({ content, type, user: userId });
         await post.save();
-        res.status(201).json({ message: "Post created sucessfully", post });
+        res.status(201).json({
+            status: "success",
+            message: post,
+        });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika membuat post",
+            status: "error",
+            message: "An unexpected error occurred",
         });
     }
 };
@@ -47,11 +52,13 @@ exports.getPosts = async (req, res) => {
         const posts = await Post.find({}, "content type user createdAt");
 
         res.status(200).json({
+            status: "success",
             data: posts,
         });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika mendapatkan data posts",
+            status: "error",
+            message: "An unexpected error occurred",
         });
     }
 };
@@ -71,12 +78,13 @@ exports.getSpecificPost = async (req, res) => {
         }
 
         res.status(200).json({
+            status: "success",
             data: post,
-            message: "Successfully GET the Post Id",
         });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika mendapatkan data Post",
+            status: "error",
+            error: "An unexpected error occurred" || error.message,
         });
     }
 };
@@ -95,12 +103,13 @@ exports.editPost = async (req, res) => {
         );
 
         res.status(200).json({
-            message: "Post Update Successfully",
+            status: "success",
             data: updatedPost,
         });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika mendapatkan Data Post",
+            status: "successs",
+            message: "An unexpected error occurred" || error.message,
         });
     }
 };
@@ -116,11 +125,13 @@ exports.deletePost = async (req, res) => {
         // await Post.deleteOne({ _id: req.params.id });
 
         res.status(200).json({
+            status: "success",
             message: "Post deleted successfully",
         });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika deleting Post",
+            status: "error",
+            message: "An unexpected error occurred" || error.message,
         });
     }
 };

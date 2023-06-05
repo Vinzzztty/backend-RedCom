@@ -7,12 +7,14 @@ exports.createComment = async (req, res) => {
         const comment = new Comment({ text, post: postId, user: userId });
         await comment.save();
         res.status(201).json({
+            status: "success",
             message: "Comment created successfully",
             comment,
         });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika creating comments",
+            status: "error",
+            message: "An unexpected error occurred",
         });
     }
 };
@@ -27,11 +29,13 @@ exports.showAllComments = async (req, res) => {
         const comments = await Comment.find();
 
         res.status(200).json({
+            status: "success",
             data: comments,
         });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika mendapatkan data Comments",
+            status: "error",
+            message: "An unexpected error occurred",
         });
     }
 };
@@ -49,12 +53,13 @@ exports.getCommentById = async (req, res) => {
         const comment = await Comment.findById(commentId);
 
         res.status(200).json({
+            status: "success",
             data: comment,
-            message: "Successfully GET the Comment Id",
         });
     } catch (error) {
-        res.status(500).json({
-            error: "Error ketika mendapatkan data comment",
+        res.status(404).json({
+            status: "error",
+            message: "Comment id not found" || error.message,
         });
     }
 };
@@ -76,12 +81,13 @@ exports.editComment = async (req, res) => {
         );
 
         res.status(200).json({
-            message: "Comment Update Successfully",
+            status: "success",
             data: updatedComment,
         });
     } catch (error) {
-        res.status(500).json({
-            error: "Error ketika mendapatkan data Comment",
+        res.status(404).json({
+            status: "error",
+            message: "Comment id not found" || error.message,
         });
     }
 };
@@ -94,11 +100,13 @@ exports.deleteComment = async (req, res) => {
         await Comment.findByIdAndDelete(commentId);
 
         res.status(200).json({
+            status: "success",
             message: "Comment deleted successfully",
         });
     } catch (error) {
         res.status(500).json({
-            error: "Error ketika deleting comment",
+            status: "error",
+            message: "An unexpected error occurred",
         });
     }
 };
