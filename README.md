@@ -20,7 +20,7 @@ npm run start
 
 Anggota Kelompok:
 Nama | NIM
-:---: | :---: | :---:
-Kevin Arnandes | 21.11.4306 | Backend Programmer
-Dhaniar Febrin Wahyudi | 21.11.4308 | Tester & Reviewer
-Hisam Saputra | 21.11.4321 | Tester
+:---: | :---:
+Kevin Arnandes (BE) | 21.11.4306
+Dhaniar Febrin Wahyudi (Tester & Reviewer) | 21.11.4308
+Hisam Saputra (Tester) | 21.11.4321
