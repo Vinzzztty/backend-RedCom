@@ -1,32 +1,36 @@
 const mongoose = require("mongoose");
 
-const postSchema = new mongoose.Schema({
-    content: {
-        type: String,
-        required: true,
+const postSchema = new mongoose.Schema(
+    {
+        content: {
+            type: String,
+            required: true,
+        },
+        type: {
+            type: String,
+            enum: [
+                "Science",
+                "Computer",
+                "Math",
+                "Programming",
+                "History",
+                "Other",
+            ],
+            required: true,
+        },
+        user_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
     },
-    type: {
-        type: String,
-        enum: [
-            "Science",
-            "Computer",
-            "Math",
-            "Programming",
-            "History",
-            "Other",
-        ],
-        required: true,
-    },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
+    {
+        timestamps: {
+            createdAt: "crdAt",
+            updatedAt: "upAt",
+        },
+    }
+);
 
 const Post = mongoose.model("Post", postSchema);
 

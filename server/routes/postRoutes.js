@@ -5,8 +5,8 @@ const postController = require("../controllers/postController");
 // Create a new post
 router.post("/create", postController.createPost);
 
-// Get all posts with the comments
-router.get("/homepage", postController.homepage);
+// // Get all posts with the comments
+// router.get("/homepage", postController.homepage);
 
 // GET POSTS data
 router.get("/", postController.getPosts);

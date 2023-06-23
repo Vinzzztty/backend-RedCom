@@ -2,8 +2,16 @@ const User = require("../models/User");
 
 exports.createUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        const user = new User({ username, email, password });
+        const { username, firstName, lastName, email, gender, password } =
+            req.body;
+        const user = new User({
+            username,
+            firstName,
+            lastName,
+            email,
+            gender,
+            password,
+        });
         await user.save();
         res.status(201).json({
             message: "User created successfully",
@@ -23,7 +31,7 @@ exports.createUser = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
     try {
-        const user = await User.find({}, "username email");
+        const user = await User.find({}, "firstName username email");
 
         res.status(200).json({
             status: "success",
@@ -81,12 +89,13 @@ exports.getSpecificUser = async (req, res) => {
 exports.editUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { username, email, password } = req.body;
+        const { username, firstName, lastName, email, gender, password } =
+            req.body;
 
         // Find the user by ID and update the fields
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { username, email, password },
+            { username, firstName, lastName, email, gender, password },
             { new: true }
         );
 

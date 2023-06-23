@@ -11,10 +11,10 @@
 
         <h2>Posts</h2>
         <% post.forEach((postingan) => { %>
-            <div>
-                <h3><%= postingan.content %></h3>
-                <p>Author: <%= postingan.user.username %></p>
-            </div>
+        <div>
+            <h3><%= postingan.content %></h3>
+            <p>Author: <%= postingan.user_id.username %></p>
+        </div>
         <% }) %>
     </body>
 </html>

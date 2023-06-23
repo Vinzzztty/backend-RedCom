@@ -4,7 +4,7 @@ const Comment = require("../models/Comment");
 exports.createComment = async (req, res) => {
     try {
         const { text, postId, userId } = req.body;
-        const comment = new Comment({ text, post: postId, user: userId });
+        const comment = new Comment({ text, post_id: postId, user_id: userId });
         await comment.save();
         res.status(201).json({
             status: "success",
