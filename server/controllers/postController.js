@@ -1,33 +1,6 @@
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 
-// // Show the Homepage
-// exports.homepage = async (req, res) => {
-//     try {
-//         const posts = await Post.find().populate("user");
-//         const postsWithComments = await Promise.all(
-//             posts.map(async (post) => {
-//                 const comments = await Comment.find({
-//                     post: post._id,
-//                 }).populate("user");
-//                 return {
-//                     _id: post._id,
-//                     content: post.content,
-//                     type: post.type,
-//                     user_id: post.user,
-//                     comments: comments,
-//                 };
-//             })
-//         );
-//         res.status(200).json({ status: "success", postsWithComments });
-//     } catch (error) {
-//         res.status(500).json({
-//             status: "error",
-//             message: "An unexpected error occurred",
-//         });
-//     }
-// };
-
 // Create new Post
 exports.createPost = async (req, res) => {
     try {
