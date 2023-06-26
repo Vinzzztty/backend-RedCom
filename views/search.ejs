@@ -1,0 +1,12 @@
+<h1>Search</h1>
+
+<div>
+    <% if(post != "") { %> <% post.forEach((postingan) => { %>
+    <div>
+        <h3><%= postingan.content %></h3>
+        <p>Author: <%= postingan.user_id.username %></p>
+    </div>
+    <% }) %> <% } else { %>
+    <h2>No Result found.</h2>
+    <% } %>
+</div>

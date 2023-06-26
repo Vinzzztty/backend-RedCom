@@ -16,5 +16,15 @@
             <p>Author: <%= postingan.user_id.username %></p>
         </div>
         <% }) %>
+
+        <form role="search" method="POST" action="/api/homepage/search">
+            <input
+                type="search"
+                name="searchPost"
+                class="form-control"
+                placeholder="Search..."
+                aria-label="Search"
+            />
+        </form>
     </body>
 </html>
