@@ -3,8 +3,15 @@ const bcryptjs = require("bcryptjs");
 
 exports.createUser = async (req, res) => {
     try {
-        const { username, firstName, lastName, email, gender, password } =
-            req.body;
+        const {
+            username,
+            firstName,
+            lastName,
+            email,
+            gender,
+            password,
+            is_admin,
+        } = req.body;
 
         const hashPassword = await bcryptjs.hash(password, 8);
         const user = new User({
@@ -14,6 +21,7 @@ exports.createUser = async (req, res) => {
             email: email,
             gender: gender,
             password: hashPassword,
+            is_admin: is_admin,
         });
         await user.save();
         res.status(201).json({
@@ -34,7 +42,7 @@ exports.createUser = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
     try {
-        const user = await User.find({}, "firstName username email");
+        const user = await User.find({}, "firstName username email is_admin");
 
         res.status(200).json({
             status: "success",
