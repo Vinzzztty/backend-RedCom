@@ -1,11 +1,36 @@
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
+const Kategori = require("../models/Kategori");
+const User = require("../models/User");
 
 // Create new Post
 exports.createPost = async (req, res) => {
     try {
-        const { content, type, userId } = req.body;
-        const post = new Post({ content, type, user_id: userId });
+        const { content, kategoriId, userId } = req.body;
+
+        const userExists = await User.exists({ _id: userId });
+
+        if (!userExists) {
+            return res.status(404).json({
+                status: "error",
+                message: "User not found",
+            });
+        }
+
+        const kategoriExists = await Kategori.exists({ _id: kategoriId });
+
+        if (!kategoriExists) {
+            return res.status(404).json({
+                status: "error",
+                message: "Kategori not found",
+            });
+        }
+
+        const post = new Post({
+            content,
+            kategori_id: kategoriId,
+            user_id: userId,
+        });
         await post.save();
         res.status(201).json({
             status: "success",
@@ -64,12 +89,12 @@ exports.getSpecificPost = async (req, res, next) => {
 exports.editPost = async (req, res) => {
     try {
         const postId = req.params.id;
-        const { content, type } = req.body;
+        const { content, kategoriId } = req.body;
 
         // Find the post by Id and Update the fields
         const updatedPost = await Post.findByIdAndUpdate(
             postId,
-            { content, type },
+            { content, kategori_id: kategoriId },
             { new: true }
         );
 

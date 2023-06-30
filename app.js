@@ -7,6 +7,8 @@ const userRoutes = require("./server/routes/userRoutes");
 const postRoutes = require("./server/routes/postRoutes");
 const commentRoutes = require("./server/routes/commentRoutes");
 const homeRoutes = require("./server/routes/homeRoutes");
+const kategoriRoutes = require("./server/routes/kategoriRoute");
+
 const authRoutes = require("./server/routes/authRoute");
 
 const app = express();
@@ -25,6 +27,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/homepage", homeRoutes);
+app.use("/api/kategori", kategoriRoutes);
+
 app.use("/api/auth", authRoutes);
 
 // Handle 404

@@ -6,16 +6,9 @@ const postSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        type: {
-            type: String,
-            enum: [
-                "Science",
-                "Computer",
-                "Math",
-                "Programming",
-                "History",
-                "Other",
-            ],
+        kategori_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Kategori",
             required: true,
         },
         user_id: {

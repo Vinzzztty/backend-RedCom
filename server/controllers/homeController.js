@@ -2,7 +2,9 @@ const Posts = require("../models/Post");
 
 exports.home = async (req, res) => {
     try {
-        const post = await Posts.find().populate("user_id");
+        const post = await Posts.find()
+            .populate("user_id")
+            .populate("kategori_id");
         res.render("home", { post });
         console.log(post);
     } catch (error) {
