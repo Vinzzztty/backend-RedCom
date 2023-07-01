@@ -10,6 +10,7 @@ exports.createUser = async (req, res) => {
             email,
             gender,
             password,
+            profilePictureUrl,
             is_admin,
         } = req.body;
 
@@ -21,6 +22,7 @@ exports.createUser = async (req, res) => {
             email: email,
             gender: gender,
             password: hashPassword,
+            profilePictureUrl: profilePictureUrl,
             is_admin: is_admin,
         });
         await user.save();
@@ -100,13 +102,28 @@ exports.getSpecificUser = async (req, res) => {
 exports.editUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { username, firstName, lastName, email, gender, password } =
-            req.body;
+        const {
+            username,
+            firstName,
+            lastName,
+            email,
+            gender,
+            profilePictureUrl,
+            password,
+        } = req.body;
 
         // Find the user by ID and update the fields
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { username, firstName, lastName, email, gender, password },
+            {
+                username,
+                firstName,
+                lastName,
+                email,
+                gender,
+                profilePictureUrl,
+                password,
+            },
             { new: true }
         );
 

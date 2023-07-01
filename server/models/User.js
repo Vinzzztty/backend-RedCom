@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        proflePictureUrl: {
+            type: String,
+        },
         is_admin: {
             type: Number,
             default: 0,
