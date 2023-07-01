@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./server/config/dbConfig");
 
+const { verifyAccessToken } = require("./server/middleware/jwt_helper");
+
 const userRoutes = require("./server/routes/userRoutes");
 const postRoutes = require("./server/routes/postRoutes");
 const commentRoutes = require("./server/routes/commentRoutes");
@@ -30,6 +32,10 @@ app.use("/api/homepage", homeRoutes);
 app.use("/api/kategori", kategoriRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.get("/", verifyAccessToken, async (req, res, next) => {
+    res.send("Hello");
+});
 
 // Handle 404
 app.get("*", (req, res) => {

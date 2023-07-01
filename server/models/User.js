@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             required: true,
-            unique: true,
         },
         gender: {
             type: String,
@@ -28,7 +27,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        proflePictureUrl: {
+        profilePictureUrl: {
             type: String,
         },
         is_admin: {

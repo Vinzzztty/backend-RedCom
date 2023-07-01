@@ -1,3 +1,4 @@
 node_modules
 .env
 redCom.postman_collection.json
+rest.http
