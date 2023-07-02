@@ -61,36 +61,51 @@ exports.search = async (req, res) => {
  */
 exports.createPost = async (req, res) => {
     try {
-        const { content, kategoriId, userId } = req.body;
+        verifyAccessToken(req, res, async (err) => {
+            if (err) {
+                return res.status(401).json({ error: "Unauthorized" });
+            }
+            const { content, kategoriId } = req.body;
 
-        const userExists = await User.exists({ _id: userId });
+            const userId = req.payload.aud;
 
-        if (!userExists) {
-            return res.status(404).json({
-                status: "error",
-                message: "User not found",
+            const user = await User.findOne({ _id: userId });
+
+            if (!user) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "user not found",
+                });
+            }
+            const kategoriExists = await Kategori.exists({ _id: kategoriId });
+
+            if (!kategoriExists) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "Kategori not found",
+                });
+            }
+
+            const post = new Post({
+                content,
+                kategori_id: kategoriId,
+                user_id: userId,
             });
-        }
-
-        const kategoriExists = await Kategori.exists({ _id: kategoriId });
-
-        if (!kategoriExists) {
-            return res.status(404).json({
-                status: "error",
-                message: "Kategori not found",
+            await post.save();
+            res.status(201).json({
+                status: "success",
+                message: post,
             });
-        }
+        });
 
-        const post = new Post({
-            content,
-            kategori_id: kategoriId,
-            user_id: userId,
-        });
-        await post.save();
-        res.status(201).json({
-            status: "success",
-            message: post,
-        });
+        //const userExists = await User.exists({ _id: userId });
+
+        // if (!userExists) {
+        //     return res.status(404).json({
+        //         status: "error",
+        //         message: "User not found",
+        //     });
+        // }
     } catch (error) {
         res.status(500).json({
             status: "error",
