@@ -97,15 +97,6 @@ exports.createPost = async (req, res) => {
                 message: post,
             });
         });
-
-        //const userExists = await User.exists({ _id: userId });
-
-        // if (!userExists) {
-        //     return res.status(404).json({
-        //         status: "error",
-        //         message: "User not found",
-        //     });
-        // }
     } catch (error) {
         res.status(500).json({
             status: "error",
@@ -116,13 +107,34 @@ exports.createPost = async (req, res) => {
 
 exports.createComment = async (req, res) => {
     try {
-        const { text, postId, userId } = req.body;
-        const comment = new Comment({ text, post_id: postId, user_id: userId });
-        await comment.save();
-        res.status(201).json({
-            status: "success",
-            message: "Comment created successfully",
-            comment,
+        verifyAccessToken(req, res, async (err) => {
+            if (err) {
+                return res.status(401).json({ error: "Unauthorized" });
+            }
+            const { text, postId } = req.body;
+
+            const userId = req.payload.aud;
+
+            const user = await User.findOne({ _id: userId });
+
+            if (!user) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "user not found",
+                });
+            }
+            const comment = new Comment({
+                text,
+                post_id: postId,
+                user_id: userId,
+            });
+            await comment.save();
+
+            res.status(201).json({
+                status: "success",
+                message: "Comment created successfully",
+                comment,
+            });
         });
     } catch (error) {
         res.status(500).json({
