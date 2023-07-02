@@ -148,8 +148,21 @@ exports.sortByKategori = async (req, res) => {
     try {
         const kategoriPost = req.query.kategoriPost;
 
+        // Find the kategori by name
+        const kategori = await Kategori.findOne({
+            kategori: kategoriPost,
+        }).exec();
+
+        // If kategori is not found, return an error response
+        if (!kategori) {
+            return res.status(404).json({
+                status: "error",
+                message: "Kategori not found",
+            });
+        }
+
         // Find all posts with the given kategori_id
-        const posts = await Post.find({ kategori_id: kategoriPost })
+        const posts = await Post.find({ kategori_id: kategori._id })
             .populate("user_id")
             .exec();
 
@@ -157,7 +170,7 @@ exports.sortByKategori = async (req, res) => {
         if (posts.length === 0) {
             return res.status(404).json({
                 status: "error",
-                message: "No posts found with the given kategori_id",
+                message: "Not Post with this Kategori",
             });
         }
 
