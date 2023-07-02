@@ -28,13 +28,13 @@ exports.signup = async (req, res) => {
         });
         await user.save();
 
-        const accessToken = await signAccessToken(user._id);
-        const refreshToken = await signRefreshToken(user._id);
+        //const accessToken = await signAccessToken(user._id);
+        //const refreshToken = await signRefreshToken(user._id);
 
         res.status(201).json({
             message: "User created successfully",
-            access_token: { accessToken },
-            refresh_token: { refreshToken },
+            //access_token: { accessToken },
+            //refresh_token: { refreshToken },
             user,
         });
     } catch (error) {
