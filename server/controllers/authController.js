@@ -65,12 +65,12 @@ exports.login = async (req, res) => {
         }
 
         const accessToken = await signAccessToken(user._id);
-        const refreshToken = await signRefreshToken(user._id);
+        //const refreshToken = await signRefreshToken(user._id);
 
         res.status(200).json({
             message: "User logged in successfully",
             access_token: accessToken,
-            refresh_token: refreshToken,
+            //refresh_token: refreshToken,
         });
     } catch (error) {
         res.status(500).json({
