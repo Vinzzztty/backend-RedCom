@@ -118,8 +118,6 @@ exports.deletePost = async (req, res) => {
         // Delete the post from the databse
         await Post.findByIdAndDelete(postId);
 
-        // await Post.deleteOne({ _id: req.params.id });
-
         res.status(200).json({
             status: "success",
             message: "Post deleted successfully",

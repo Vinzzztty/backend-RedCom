@@ -7,7 +7,7 @@ module.exports = {
 
             const secret = process.env.SECRET_TOKEN;
             const options = {
-                expiresIn: "15s",
+                expiresIn: "1h",
                 issuer: "pickurpage.com",
                 audience: userId.toString(),
             };

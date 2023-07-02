@@ -33,9 +33,9 @@ app.use("/api/kategori", kategoriRoutes);
 
 app.use("/api/auth", authRoutes);
 
-app.get("/", verifyAccessToken, async (req, res, next) => {
-    res.send("Hello");
-});
+// app.get("/", verifyAccessToken, async (req, res, next) => {
+//     res.send("Hello");
+// });
 
 // Handle 404
 app.get("*", (req, res) => {

@@ -3,24 +3,13 @@ const bcryptjs = require("bcryptjs");
 
 exports.createUser = async (req, res) => {
     try {
-        const {
-            username,
-            firstName,
-            lastName,
-            email,
-            gender,
-            password,
-            profilePictureUrl,
-            is_admin,
-        } = req.body;
+        const { username, email, password, profilePictureUrl, is_admin } =
+            req.body;
 
         const hashPassword = await bcryptjs.hash(password, 8);
         const user = new User({
             username: username,
-            firstName: firstName,
-            lastName: lastName,
             email: email,
-            gender: gender,
             password: hashPassword,
             profilePictureUrl: profilePictureUrl,
             is_admin: is_admin,
@@ -102,25 +91,14 @@ exports.getSpecificUser = async (req, res) => {
 exports.editUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const {
-            username,
-            firstName,
-            lastName,
-            email,
-            gender,
-            profilePictureUrl,
-            password,
-        } = req.body;
+        const { username, email, profilePictureUrl, password } = req.body;
 
         // Find the user by ID and update the fields
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             {
                 username,
-                firstName,
-                lastName,
                 email,
-                gender,
                 profilePictureUrl,
                 password,
             },

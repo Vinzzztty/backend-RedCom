@@ -10,15 +10,7 @@ const {
 
 exports.signup = async (req, res) => {
     try {
-        const {
-            username,
-            firstName,
-            lastName,
-            email,
-            gender,
-            password,
-            is_admin,
-        } = req.body;
+        const { username, email, password, is_admin } = req.body;
 
         const doesExist = await User.findOne({ email: email });
         if (doesExist) {
@@ -30,10 +22,7 @@ exports.signup = async (req, res) => {
         const hashPassword = await bcryptjs.hash(password, 8);
         const user = new User({
             username: username,
-            firstName: firstName,
-            lastName: lastName,
             email: email,
-            gender: gender,
             password: hashPassword,
             is_admin: is_admin,
         });
