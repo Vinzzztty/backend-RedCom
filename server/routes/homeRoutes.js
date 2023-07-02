@@ -6,7 +6,9 @@ router.get("/", homeController.home);
 
 router.get("/tes", homeController.tes);
 
-router.post("/search", homeController.search);
+router.get("/search", homeController.search);
+
+router.get("/sort-kategori", homeController.sortByKategori);
 
 router.post("/new-post", homeController.createPost);
 

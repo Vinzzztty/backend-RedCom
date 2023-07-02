@@ -37,7 +37,7 @@ exports.tes = async (req, res) => {
  */
 exports.search = async (req, res) => {
     try {
-        let searchPost = req.body.searchPost;
+        let searchPost = req.query.searchPost;
         const searchNoSpecialChar = searchPost.replace(/[^a-zA-Z0-9 ]/g, "");
 
         const post = await Post.find({
@@ -144,9 +144,32 @@ exports.createComment = async (req, res) => {
     }
 };
 
-// exports.sortByKategori = async(req, res) => {
-//     let kategoriPost = req.body.kategoriPost
+exports.sortByKategori = async (req, res) => {
+    try {
+        const kategoriPost = req.query.kategoriPost;
 
-//     const
+        // Find all posts with the given kategori_id
+        const posts = await Post.find({ kategori_id: kategoriPost })
+            .populate("user_id")
+            .exec();
 
-// }
+        // If no posts are found, return an error response
+        if (posts.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                message: "No posts found with the given kategori_id",
+            });
+        }
+
+        // Return the sorted posts as the response
+        res.status(200).json({
+            status: "success",
+            data: posts,
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: "An unexpected error occurred" + error.message,
+        });
+    }
+};
