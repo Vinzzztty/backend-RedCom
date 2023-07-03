@@ -14,4 +14,6 @@ router.post("/new-post", homeController.createPost);
 
 router.post("/new-comment", homeController.createComment);
 
+router.get("/comments", homeController.getCommentByIdPost);
+
 module.exports = router;

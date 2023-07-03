@@ -186,3 +186,38 @@ exports.sortByKategori = async (req, res) => {
         });
     }
 };
+
+exports.getCommentByIdPost = async (req, res) => {
+    try {
+        const postId = req.query.postId;
+
+        // Find Specific Comment by Post Id and populate user and post
+        const comments = await Comment.find({ post_id: postId })
+            .populate({
+                path: "user_id",
+                select: "username",
+            })
+            .populate({
+                path: "post_id",
+                select: "content",
+            });
+
+        const transformedComments = comments.map((comment) => {
+            return {
+                text: comment.text,
+                user_id: comment.user_id.username,
+                post_id: comment.post_id.content,
+            };
+        });
+
+        res.status(200).json({
+            status: "success",
+            data: transformedComments,
+        });
+    } catch (error) {
+        res.status(404).json({
+            status: "error",
+            message: "Comment id not found" || error.message,
+        });
+    }
+};
