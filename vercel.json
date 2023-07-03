@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "name": "backend-RedCom",
+    "builds": [
+        {
+            "src": "app.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/"
+        }
+    ]
+}
