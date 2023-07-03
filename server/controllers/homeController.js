@@ -208,6 +208,7 @@ exports.getCommentByIdPost = async (req, res) => {
 
         const transformedComments = comments.map((comment) => {
             return {
+                _id: comment._id,
                 text: comment.text,
                 username: comment.user_id.username,
             };
