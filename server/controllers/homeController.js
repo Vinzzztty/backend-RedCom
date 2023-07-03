@@ -195,3 +195,32 @@ exports.sortByKategori = async (req, res) => {
         });
     }
 };
+
+exports.getCommentByIdPost = async (req, res) => {
+    try {
+        const postId = req.query.postId;
+
+        // Find Specific Comment by Post Id and populate user and post
+        const comments = await Comment.find({ post_id: postId }).populate({
+            path: "user_id",
+            select: "username",
+        });
+
+        const transformedComments = comments.map((comment) => {
+            return {
+                text: comment.text,
+                username: comment.user_id.username,
+            };
+        });
+
+        res.status(200).json({
+            status: "success",
+            data: transformedComments,
+        });
+    } catch (error) {
+        res.status(404).json({
+            status: "error",
+            message: "Comment id not found" || error.message,
+        });
+    }
+};
