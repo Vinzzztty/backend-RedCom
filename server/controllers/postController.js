@@ -67,7 +67,10 @@ exports.getSpecificPost = async (req, res, next) => {
         const postId = req.params.id;
 
         // Find Specific Post by Id
-        const post = await Post.findById(postId);
+        const post = await Post.findById(postId)
+            .populate("user_id")
+            .populate("kategori_id")
+            .exec();
 
         if (!post) {
             return res.status(404).json({

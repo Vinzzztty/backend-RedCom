@@ -9,8 +9,12 @@ exports.home = async (req, res) => {
         const post = await Post.find()
             .populate("user_id")
             .populate("kategori_id");
-        res.render("home", { post });
-        console.log(post);
+        // res.render("home", { post });
+        res.status(200).json({
+            status: "success",
+            data: post,
+        });
+        // console.log(post);
     } catch (error) {
         res.status(500).json({
             error: error,
@@ -44,9 +48,13 @@ exports.search = async (req, res) => {
             $or: [
                 { content: { $regex: new RegExp(searchNoSpecialChar, "i") } },
             ],
-        }).populate("user_id");
+        }).populate("user_id").populate("kategori_id");
 
-        res.render("search", { post });
+        // res.render("search", { post });
+        res.status(200).json({
+            status: "Success",
+            data: post,
+        });
         return;
     } catch (error) {
         res.status(500).json({
@@ -164,6 +172,7 @@ exports.sortByKategori = async (req, res) => {
         // Find all posts with the given kategori_id
         const posts = await Post.find({ kategori_id: kategori._id })
             .populate("user_id")
+            .populate("kategori_id")
             .exec();
 
         // If no posts are found, return an error response
