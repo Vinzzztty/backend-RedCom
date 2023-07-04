@@ -165,9 +165,7 @@ exports.createComment = async (req, res) => {
             if (err) {
                 return res.status(401).json({ error: "Unauthorized" });
             }
-            const { text, postId } = req.body;
-
-            const userId = req.payload.aud;
+            const { text, postId, userId } = req.body;
 
             const user = await User.findOne({ _id: userId });
 
