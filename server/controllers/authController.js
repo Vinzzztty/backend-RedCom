@@ -152,7 +152,10 @@ exports.getUserPost = async (req, res) => {
                 });
             }
 
-            const posts = await Post.find({ user_id: userId });
+            const posts = await Post.find({ user_id: userId })
+                .populate("user_id")
+                .populate("kategori_id")
+                .sort({ crdAt: -1 });
 
             if (!posts) {
                 return res.status(404).json({
