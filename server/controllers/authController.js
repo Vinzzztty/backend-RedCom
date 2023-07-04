@@ -9,6 +9,8 @@ const {
     verifyRefreshToken,
 } = require("../middleware/jwt_helper");
 
+const { formatDate, formatTime } = require("../utils/formattedDate");
+
 exports.signup = async (req, res) => {
     try {
         const { username, email, password, is_admin } = req.body;
@@ -164,9 +166,23 @@ exports.getUserPost = async (req, res) => {
                 });
             }
 
+            const formattedPosts = posts.map((post) => {
+                const formattedCreatedAtDate = formatDate(post.crdAt);
+                const formattedCreatedAtTime = formatTime(post.crdAt);
+
+                return {
+                    _id: post._id,
+                    content: post.content,
+                    kategori_id: post.kategori_id,
+                    user_id: post.user_id,
+                    date_created: formattedCreatedAtDate,
+                    time: formattedCreatedAtTime,
+                };
+            });
+
             res.status(200).json({
                 status: "success",
-                data: posts,
+                data: formattedPosts,
             });
         });
     } catch (error) {

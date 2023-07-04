@@ -15,8 +15,15 @@ const app = express();
 const port = 5000 || process.env.PORT;
 
 // CORS configuration
-app.use(cors());
 app.set("trust proxy", 1);
+app.use(
+    cors({
+        origin: "https://redcom-deploy.vercel.app/",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

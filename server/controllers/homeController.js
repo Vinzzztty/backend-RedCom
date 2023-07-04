@@ -3,19 +3,40 @@ const User = require("../models/User");
 const Kategori = require("../models/Kategori");
 const Comment = require("../models/Comment");
 const { verifyAccessToken } = require("../middleware/jwt_helper");
+const { formatDate, formatTime } = require("../utils/formattedDate");
 
 exports.home = async (req, res) => {
     try {
-        const post = await Post.find()
+        const posts = await Post.find()
             .populate("user_id")
             .populate("kategori_id")
             .sort({ crdAt: -1 });
-        // res.render("home", { post });
+
+        if (!posts) {
+            return res.status(404).json({
+                status: "error",
+                message: "Post Not Found",
+            });
+        }
+
+        const formattedPosts = posts.map((post) => {
+            const formattedCreatedAtDate = formatDate(post.crdAt);
+            const formattedCreatedAtTime = formatTime(post.crdAt);
+
+            return {
+                _id: post._id,
+                content: post.content,
+                kategori_id: post.kategori_id,
+                user_id: post.user_id,
+                date_created: formattedCreatedAtDate,
+                time: formattedCreatedAtTime,
+            };
+        });
+
         res.status(200).json({
             status: "success",
-            data: post,
+            data: formattedPosts,
         });
-        // console.log(post);
     } catch (error) {
         res.status(500).json({
             error: error,
@@ -45,18 +66,40 @@ exports.search = async (req, res) => {
         let searchPost = req.query.searchPost;
         const searchNoSpecialChar = searchPost.replace(/[^a-zA-Z0-9 ]/g, "");
 
-        const post = await Post.find({
+        const posts = await Post.find({
             $or: [
                 { content: { $regex: new RegExp(searchNoSpecialChar, "i") } },
             ],
         })
             .populate("user_id")
-            .populate("kategori_id");
+            .populate("kategori_id")
+            .sort({ crdAt: -1 });
+
+        if (posts.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                message: "Post Not Found",
+            });
+        }
+
+        const formattedPosts = posts.map((post) => {
+            const formattedCreatedAtDate = formatDate(post.crdAt);
+            const formattedCreatedAtTime = formatTime(post.crdAt);
+
+            return {
+                _id: post._id,
+                content: post.content,
+                kategori_id: post.kategori_id,
+                user_id: post.user_id,
+                date_created: formattedCreatedAtDate,
+                time: formattedCreatedAtTime,
+            };
+        });
 
         // res.render("search", { post });
         res.status(200).json({
             status: "Success",
-            data: post,
+            data: formattedPosts,
         });
         return;
     } catch (error) {
@@ -162,7 +205,7 @@ exports.sortByKategori = async (req, res) => {
         // Find the kategori by name
         const kategori = await Kategori.findOne({
             kategori: kategoriPost,
-        }).exec();
+        });
 
         // If kategori is not found, return an error response
         if (!kategori) {
@@ -176,6 +219,7 @@ exports.sortByKategori = async (req, res) => {
         const posts = await Post.find({ kategori_id: kategori._id })
             .populate("user_id")
             .populate("kategori_id")
+            .sort({ crdAt: -1 })
             .exec();
 
         // If no posts are found, return an error response
@@ -186,10 +230,24 @@ exports.sortByKategori = async (req, res) => {
             });
         }
 
+        const formattedPosts = posts.map((post) => {
+            const formattedCreatedAtDate = formatDate(post.crdAt);
+            const formattedCreatedAtTime = formatTime(post.crdAt);
+
+            return {
+                _id: post._id,
+                content: post.content,
+                kategori_id: post.kategori_id,
+                user_id: post.user_id,
+                date_created: formattedCreatedAtDate,
+                time: formattedCreatedAtTime,
+            };
+        });
+
         // Return the sorted posts as the response
         res.status(200).json({
             status: "success",
-            data: posts,
+            data: formattedPosts,
         });
     } catch (error) {
         res.status(500).json({
