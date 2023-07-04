@@ -8,7 +8,8 @@ exports.home = async (req, res) => {
     try {
         const post = await Post.find()
             .populate("user_id")
-            .populate("kategori_id");
+            .populate("kategori_id")
+            .sort({ crdAt: -1 });
         // res.render("home", { post });
         res.status(200).json({
             status: "success",
@@ -48,7 +49,9 @@ exports.search = async (req, res) => {
             $or: [
                 { content: { $regex: new RegExp(searchNoSpecialChar, "i") } },
             ],
-        }).populate("user_id").populate("kategori_id");
+        })
+            .populate("user_id")
+            .populate("kategori_id");
 
         // res.render("search", { post });
         res.status(200).json({
