@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Post = require("../models/Post");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {
@@ -102,7 +103,7 @@ exports.refreshToken = async (req, res) => {
     }
 };
 
-exports.getUserPost = async (req, res) => {
+exports.getUserDetails = async (req, res) => {
     try {
         verifyAccessToken(req, res, async (err) => {
             if (err) {
@@ -123,6 +124,46 @@ exports.getUserPost = async (req, res) => {
             res.status(200).json({
                 status: "success",
                 data: user,
+            });
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: error.message,
+        });
+    }
+};
+
+exports.getUserPost = async (req, res) => {
+    try {
+        verifyAccessToken(req, res, async (err) => {
+            if (err) {
+                return res.status(401).json({ error: "Unathorized " });
+            }
+
+            const userId = req.payload.aud;
+
+            const user = await User.findOne({ _id: userId });
+
+            if (!user) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "user not found",
+                });
+            }
+
+            const posts = await Post.find({ user_id: userId });
+
+            if (!posts) {
+                return res.status(404).json({
+                    status: "Not have Post",
+                    message: "This user not create Post",
+                });
+            }
+
+            res.status(200).json({
+                status: "success",
+                data: posts,
             });
         });
     } catch (error) {
