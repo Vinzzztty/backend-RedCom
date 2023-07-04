@@ -4,8 +4,6 @@ const express = require("express");
 const connectDB = require("./server/config/dbConfig");
 const cors = require("cors");
 
-const { verifyAccessToken } = require("./server/middleware/jwt_helper");
-
 const userRoutes = require("./server/routes/userRoutes");
 const postRoutes = require("./server/routes/postRoutes");
 const commentRoutes = require("./server/routes/commentRoutes");
@@ -30,7 +28,17 @@ connectDB();
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
-app.use("/api/homepage", homeRoutes);
+app.use("/api/homepage", homeRoutes, (req, res, next) => {
+    // Enabling CORS
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
+    );
+    next();
+});
+
 app.use("/api/kategori", kategoriRoutes);
 
 app.use("/api/auth", authRoutes);
