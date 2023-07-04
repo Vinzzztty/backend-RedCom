@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
             });
         }
 
-        const accessToken = await signAccessToken(user._id);
+        const accessToken = await signAccessToken(user._id, user.is_admin);
         //const refreshToken = await signRefreshToken(user._id);
 
         res.status(200).json({

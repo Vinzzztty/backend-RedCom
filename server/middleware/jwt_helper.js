@@ -1,9 +1,12 @@
 const JWT = require("jsonwebtoken");
 
 module.exports = {
-    signAccessToken: (userId) => {
+    signAccessToken: (userId, isAdmin) => {
         return new Promise((resolve, reject) => {
-            const payload = {};
+            const payload = {
+                userId: userId.toString(),
+                is_admin: isAdmin,
+            };
 
             const secret = process.env.SECRET_TOKEN;
             const options = {
