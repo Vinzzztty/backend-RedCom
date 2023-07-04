@@ -18,7 +18,7 @@ const port = 5000 || process.env.PORT;
 app.set("trust proxy", 1);
 app.use(
     cors({
-        origin: "https://redcom-deploy.vercel.app/",
+        origin: "*",
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     })
