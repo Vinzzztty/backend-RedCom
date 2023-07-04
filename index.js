@@ -16,6 +16,7 @@ const port = 5000 || process.env.PORT;
 
 // CORS configuration
 app.use(cors());
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
