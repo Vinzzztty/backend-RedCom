@@ -42,11 +42,11 @@ app.get("/", (req, res) => {
 });
 
 // Handle 404
-app.get("*", (req, res) => {
-    res.status(404).json({
-        message: "Not Found",
-    });
-});
+// app.get("*", (req, res) => {
+//     res.status(404).json({
+//         message: "Not Found",
+//     });
+// });
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
