@@ -9,42 +9,25 @@ const postRoutes = require("./server/routes/postRoutes");
 const commentRoutes = require("./server/routes/commentRoutes");
 const homeRoutes = require("./server/routes/homeRoutes");
 const kategoriRoutes = require("./server/routes/kategoriRoute");
-
 const authRoutes = require("./server/routes/authRoute");
 
 const app = express();
 const port = 5000 || process.env.PORT;
 
+// CORS configuration
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.set("view engine", "ejs");
 
 // Connect to MongoDB
 connectDB();
 
 // Routes
+app.use("/api/homepage", homeRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
-app.use("/api/homepage", homeRoutes, (req, res, next) => {
-    // Enabling CORS
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "X-Requested-With,content-type"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    next();
-});
-
 app.use("/api/kategori", kategoriRoutes);
-
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
